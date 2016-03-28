@@ -18,7 +18,7 @@ Read about it online.
 import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import Flask, request, render_template, g, redirect, Response
+from flask import Flask, request, render_template, url_for, g, redirect, Response, send_file
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -37,7 +37,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #
 #     DATABASEURI = "postgresql://ewu2493:foobar@w4111db.eastus.cloudapp.azure.com/ewu2493"
 #
-DATABASEURI = "sqlite:///test.db"
+DATABASEURI = "postgresql://ksc2138:KEGUFW@w4111db.eastus.cloudapp.azure.com/ksc2138"
 
 
 #
@@ -133,10 +133,10 @@ def index():
   #
   # example of a database query
   #
-  cursor = g.conn.execute("SELECT name FROM test")
-  names = []
+  cursor = g.conn.execute("SELECT * FROM team")
+  teams = []
   for result in cursor:
-    names.append(result['name'])  # can also be accessed using result[0]
+    teams.append(result['name'].encode('utf-8'))  # can also be accessed using result[0]
   cursor.close()
 
   #
@@ -165,7 +165,7 @@ def index():
   #     <div>{{n}}</div>
   #     {% endfor %}
   #
-  context = dict(data = names)
+  context = dict(teams = teams)
 
 
   #
@@ -183,9 +183,11 @@ def index():
 # the functions for each app.route needs to have different names
 #
 @app.route('/another')
-def another():
+def another(): 
+ 
+  cursor = g.conn.execute("Select name from person")
+  
   return render_template("anotherfile.html")
-
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
