@@ -174,18 +174,33 @@ def index():
   #
   return render_template("index.html", **context)
 
-#
-# This is an example of a different path.  You can see it at
-# 
-#     localhost:8111/another
-#
-# notice that the functio name is another() rather than index()
-# the functions for each app.route needs to have different names
-#
+@app.route('/teamspage/<team_id>')
+def teamspage(team_id):
+  
+  rosterlink = "/teamspage/" + str(team_id)
+  newslink= "/news/" + str(team_id)  
+  schedulelink= "/schedule/" + str(team_id)
+  cursor = g.conn.execute("select * from player where tid=\'" + str(team_id) + "\'")
+  players = []
+  for result in cursor:
+    entry = []
+    uid = result['uid']
+    entry.append([result1[0].encode('utf-8') for result1 in g.conn.execute("select name from person where uid=\'" + str(uid) + "\'")])
+    entry.append(result['number'])
+    entry.append(result['position']) 
+    entry.append(result['grad_year'])
+    entry.append(result['hometown'])
+    players.append(entry)
+
+  context = dict(players=players, team_id=team_id, rosterlink=rosterlink,
+                 newslink=newslink, schedulelink=schedulelink)
+
+  return render_template('teamspage.html', **context)
+
 @app.route('/news/<team_id>')
 def news(team_id): 
  
-  articles = g.conn.execute("Select * from make_news")
+  articles = g.conn.execute("Select * from make_news where tid=\'" + str(team_id)+ "\'")
   articles_info = []
   for article in articles:
      article_inf = []
@@ -199,27 +214,25 @@ def news(team_id):
 
   return render_template("anotherfile.html", **context)
 
-#goes to page for team
-@app.route('/teamspage/<team_id>')
-def teamspage(team_id):
+@app.route('/schedule/<team_id>')
+def schedule(team_id):
+  events = g.conn.execute("select * from competition where tid=\'" + str(team_id) + "\'")
   
-  rosterlink = "/teamspage/" + str(team_id)
-  newslink= " 
-  cursor = g.conn.execute("select * from player where tid=\'" + str(team_id) + "\'")
-  players = []
-  for result in cursor:
-    entry = []
-    uid = result['uid']
-    entry.append([result1[0].encode('utf-8') for result1 in g.conn.execute("select name from person where uid=\'" + str(uid) + "\'")])
-    entry.append(result['number'])
-    entry.append(result['position']) 
-    entry.append(result['grad_year'])
-    entry.append(result['hometown'])
-    players.append(entry)
+  event_list = []
+  for event in events:
+    event_info = []
+    date = event['event_date']
+    event_info.append(date)
+    time = event['event_time']
+    event_info.append(time)
+    opponent = [result1[0].encode('utf-8') for result1 in g.conn.execute("select team_name from opponent where opponentid=\'" + str(event['opponentid']) + "\'")]
+    event_info.append(opponent)
+    outcome = event['outcome']
+    event_info.append(outcome)
+    event_list.append(event_info)
 
-  context = dict(players=players, team_id=team_id, rosterlink=rosterlink)
-
-  return render_template('teamspage.html', **context)
+    context = dict(event_list=event_list)
+    return render_template("schedule.html", **context)
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -257,7 +270,7 @@ if __name__ == "__main__":
 
     HOST, PORT = host, port
     print "running on %s:%d" % (HOST, PORT)
-        python server.py --help
+    app.run(host=HOST, port=PORT,debug=debug, threaded=threaded)
 
-    """
+run()
 
