@@ -12,24 +12,17 @@
 
 <body bgcolor="76B3DF">
   <h1>Welcome to Our Complete Rip-Off of GoColumbiaLions.com</h1>
-  <strong>Select something</strong>
-  <select id="team_info">
-    <option>Roster</option>
-    <option>Schedule</option>
-    <option>News</option>
-  </select>
   <strong>Select View</strong> 
   <select onchange="location = this.options[this.selectedIndex].value;">
      <option> Select</option> 
      <option value={{rosterlink}}>Roster</option> 
-     <option value="/news">News</option>
-     <option value="/schedule">Schedule</option> 
+     <option value={{newslink}}>News</option>
+     <option value={{schedulelink}}>Schedule</option> 
   </select>
-  <button id="submit" type="button" class="btn btn-primary">Submit</button>
 
 <!--  <div class="table table-striped"> -->
-  <table class="table table-striped"> 
-  <thead>
+  <table>
+  <table border="1" style="width:100%"> 
     <tr>
       <th>Player Name</th>
       <th>Number</th>

@@ -12,25 +12,25 @@
 <body bgcolor="76B3DF">
   <h1>Welcome to Our Complete Rip-Off of GoColumbiaLions.com:Schedule</h1>
 
-  <table align="center"> 
-     <thead> 
+  <table border="1" style="width:100%"> 
          <tr>
-             <th>Date<th> 
-             <th>Time<th>
-             <th>Opponent<th>
-             <th>Result<th>  
+             <th>Date</th> 
+             <th>Time</th>
+             <th>Opponent</th>
+             <th>Result</th> 
          </tr>
-     </thead>
-     <tbody>
        {% for event in event_list %}
        <tr>
-         <td align="right">{{ event[0] }}</td>
-         <td align="center">{{ event[1] }}</td>
-         <td align="right">{{ event[2][0] }}</td>
-         <td align="right">{{ event[3] }}</td>
+         <td>{{ event[0] }}</td>
+         <td>{{ event[1] }}</td>
+         <td>{{ event[2][0] }}</td>
+         <td>{{ event[3] }}</td>
        </tr>
        {% endfor %}
-     </tbody>
+  </table>
+
+<p><a href="/">Back to homepage</a></p>
+
 </body>
 
 </html>
