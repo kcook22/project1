@@ -18,7 +18,7 @@ Read about it online.
 import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import Flask, request, render_template, url_for, g, redirect, Response, send_file
+from flask import Flask, request, render_template, url_for, g, redirect, Response, send_file, make_response
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -182,14 +182,35 @@ def index():
 # notice that the functio name is another() rather than index()
 # the functions for each app.route needs to have different names
 #
-@app.route('/another')
+@app.route('/news')
 def another(): 
  
   cursor = g.conn.execute("Select name from person")
   
   return render_template("anotherfile.html")
 
-# Example of adding new data to the database
+#goes to page for team
+@app.route('/teamspage/<team_id>')
+def teamspage(team_id):
+  
+#  choice = request.args.get('team_info')
+
+  cursor = g.conn.execute("select * from player where tid=\'" + str(team_id) + "\'")
+  players = []
+  for result in cursor:
+    entry = []
+    uid = result['uid']
+    entry.append([result1[0].encode('utf-8') for result1 in g.conn.execute("select name from person where uid=\'" + str(uid) + "\'")])
+    entry.append(result['number'])
+    entry.append(result['position']) 
+    entry.append(result['grad_year'])
+    entry.append(result['hometown'])
+    players.append(entry)
+
+  context = dict(players=players) #, choice=choice)
+
+  return render_template('teamspage.html', **context)
+
 @app.route('/add', methods=['POST'])
 def add():
   name = request.form['name']
