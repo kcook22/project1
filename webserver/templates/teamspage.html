@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <meta charset+"utf-8">
+  </head>
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+
+
+<body bgcolor="76B3DF">
+  <h1>Welcome to Our Complete Rip-Off of GoColumbiaLions.com</h1>
+  <strong>Select something</strong>
+  <select id="team_info">
+    <option>Roster</option>
+    <option>Schedule</option>
+    <option>News</option>
+  </select>
+  <strong>Select View</strong> 
+  <select onchange="location = this.options[this.selectedIndex].value;">
+     <option> Select</option> 
+     <option value={{rosterlink}}>Roster</option> 
+     <option value="/news">News</option>
+     <option value="/schedule">Schedule</option> 
+  </select>
+  <button id="submit" type="button" class="btn btn-primary">Submit</button>
+
+<!--  <div class="table table-striped"> -->
+  <table class="table table-striped"> 
+  <thead>
+    <tr>
+      <th>Player Name</th>
+      <th>Number</th>
+      <th>Postition</th>
+      <th>Grad Year</th>
+      <th>Hometown</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entry in players %}
+      <tr>
+      <td>{{ entry[0][0] }}</td>
+      <td>{{ entry[1] }}</td> 
+      <td>{{ entry[2] }}</td>
+      <td>{{ entry[3] }}</td>
+      <td>{{ entry[4] }}</td>
+      </tr>  
+  {% endfor %}
+  </tbody>
+  </table>
+ 
+<p><a href="/">Back to homepage</a></p>
+
+</body>
+
+
+</html>

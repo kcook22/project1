@@ -182,19 +182,29 @@ def index():
 # notice that the functio name is another() rather than index()
 # the functions for each app.route needs to have different names
 #
-@app.route('/news')
-def another(): 
+@app.route('/news/<team_id>')
+def news(team_id): 
  
-  cursor = g.conn.execute("Select name from person")
+  articles = g.conn.execute("Select * from make_news")
+  articles_info = []
+  for article in articles:
+     article_inf = []
+     title = article['title']
+     date = article['news_date']
+     article_inf.append(title)
+     article_inf.append(date)
+     articles_info.append(article_inf)
   
-  return render_template("anotherfile.html")
+  context = dict(articles_info=articles_info)
+
+  return render_template("anotherfile.html", **context)
 
 #goes to page for team
 @app.route('/teamspage/<team_id>')
 def teamspage(team_id):
   
-#  choice = request.args.get('team_info')
-
+  rosterlink = "/teamspage/" + str(team_id)
+  newslink= " 
   cursor = g.conn.execute("select * from player where tid=\'" + str(team_id) + "\'")
   players = []
   for result in cursor:
@@ -207,7 +217,7 @@ def teamspage(team_id):
     entry.append(result['hometown'])
     players.append(entry)
 
-  context = dict(players=players) #, choice=choice)
+  context = dict(players=players, team_id=team_id, rosterlink=rosterlink)
 
   return render_template('teamspage.html', **context)
 
@@ -247,7 +257,7 @@ if __name__ == "__main__":
 
     HOST, PORT = host, port
     print "running on %s:%d" % (HOST, PORT)
-    app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
+        python server.py --help
 
+    """
 
-  run()

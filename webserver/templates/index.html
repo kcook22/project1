@@ -1,4 +1,7 @@
 <html>
+  <head>
+    <meta charset+"utf-8">
+  </head>
   <style>
     body{ 
       font-size: 15pt;
@@ -7,22 +10,27 @@
   </style>
 
 
-<body>
-  <h1>Some famous Computer Scientists</h1>
-  <div>{{data}}</div>
-
-  <div>
-    {% for n in data %}
-    <div>{{n}}</div>
+<body bgcolor="76B3DF">
+  <h1>Welcome to Our Complete Rip-Off of GoColumbiaLions.com</h1>
+  <div class="container">
+  <strong>Select A Team</strong>
+  <select id="teamthing">
+    <option >All</option>
+    {% for team in teams %}
+    <option>{{team}}</option>
     {% endfor %}
-  </div>
+  </select>
 
-<p><a href="/another">Go to the other page</a></p>
-
-<form method="POST" action="/add">
-<p>Name of new computer scientist: <input type="text" name="name"> <input type="submit" value="Add"></p>
-</form>
-
+<p><a href="/teamspage/10">Softball</a></p>
+<p><a href="/teamspage/11">Baseball</a></p>
+<p><a href="/teamspage/12">Men's Basketball</a></p>
+<p><a href="/teamspage/13">Women's Basketball</a></p>
+<p><a href="/teamspage/15">Men's Fencing</a></p>
+<p><a href="/teamspage/14">Women's Fencing</a></p>
+<p><a href="/teamspage/16">Men's Tennis</a></p>
+<p><a href="/teamspage/17">Women's Tennis</a></p>
+<p><a href="/teamspage/19">Men's Squash</a></p>
+<p><a href="/teamspage/18">Women's Squash</a></p>
 </body>
 
 
