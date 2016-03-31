@@ -21,7 +21,8 @@ from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, url_for, g, redirect, Response, send_file, make_response
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-app = Flask(__name__, template_folder=tmpl_dir)
+static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+app = Flask(__name__, static_folder=static_dir, static_url_path="/static", template_folder=tmpl_dir)
 
 
 #
@@ -180,6 +181,9 @@ def teamspage(team_id):
   rosterlink = "/teamspage/" + str(team_id)
   newslink= "/news/" + str(team_id)  
   schedulelink= "/schedule/" + str(team_id)
+  '''cursor1 = g.conn.execute("select uid from coach where tid=\'" + str(team_id) + "\'")
+  for number in cursor1:'''
+    
   cursor = g.conn.execute("select * from player where tid=\'" + str(team_id) + "\'")
   players = []
   for result in cursor:
