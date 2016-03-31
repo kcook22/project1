@@ -181,14 +181,20 @@ def teamspage(team_id):
   rosterlink = "/teamspage/" + str(team_id)
   newslink= "/news/" + str(team_id)  
   schedulelink= "/schedule/" + str(team_id)
-  '''cursor1 = g.conn.execute("select uid from coach where tid=\'" + str(team_id) + "\'")
-  for number in cursor1:'''
-    
+  cursor1 = g.conn.execute("select * from coach where tid=\'" + str(team_id) + "\'")
+  coaches = []
+  for coach in cursor1:
+    coach_info = []
+    coach_info.append([result1[0].encode('utf-8') for result1 in g.conn.execute("select photo from person where uid=\'" + str(coach['uid']) + "\'")])
+    coach_info.append([result1[0].encode('utf-8') for result1 in g.conn.execute("select name from person where uid=\'" + str(coach['uid']) + "\'")])
+    coaches.append(coach_info)     
+
   cursor = g.conn.execute("select * from player where tid=\'" + str(team_id) + "\'")
   players = []
   for result in cursor:
     entry = []
     uid = result['uid']
+    entry.append([result1[0].encode('utf-8') for result1 in g.conn.execute("select photo from person where uid=\'" + str(uid) + "\'")]) 
     entry.append([result1[0].encode('utf-8') for result1 in g.conn.execute("select name from person where uid=\'" + str(uid) + "\'")])
     entry.append(result['number'])
     entry.append(result['position']) 
@@ -197,29 +203,43 @@ def teamspage(team_id):
     players.append(entry)
 
   context = dict(players=players, team_id=team_id, rosterlink=rosterlink,
-                 newslink=newslink, schedulelink=schedulelink)
+                 newslink=newslink, schedulelink=schedulelink, coaches=coaches)
 
   return render_template('teamspage.html', **context)
 
 @app.route('/news/<team_id>')
 def news(team_id): 
- 
+  rosterlink = "/teamspage/" + str(team_id)
+  newslink= "/news/" + str(team_id)  
+  schedulelink= "/schedule/" + str(team_id)
+  
   articles = g.conn.execute("Select * from make_news where tid=\'" + str(team_id)+ "\'")
   articles_info = []
   for article in articles:
      article_inf = []
      title = article['title']
      date = article['news_date']
+     link = [result[0].encode('utf-8') for result in g.conn.execute("select story from news where title=\'" + title + "\' and news_date=\'" + str(date) + "\'")]
      article_inf.append(title)
      article_inf.append(date)
+     article_inf.append(link)
      articles_info.append(article_inf)
+
   
-  context = dict(articles_info=articles_info)
+  
+  context = dict(articles_info=articles_info, rosterlink=rosterlink, newslink=newslink,
+            schedulelink=schedulelink)
 
   return render_template("anotherfile.html", **context)
 
 @app.route('/schedule/<team_id>')
 def schedule(team_id):
+  
+  rosterlink = "/teamspage/" + str(team_id)
+  newslink= "/news/" + str(team_id)  
+  schedulelink= "/schedule/" + str(team_id)
+  
+  
   events = g.conn.execute("select * from competition where tid=\'" + str(team_id) + "\'")
   
   event_list = []
@@ -235,7 +255,8 @@ def schedule(team_id):
     event_info.append(outcome)
     event_list.append(event_info)
 
-    context = dict(event_list=event_list)
+    context = dict(event_list=event_list, schedulelink=schedulelink, newslink=newslink,
+              rosterlink=rosterlink)
     return render_template("schedule.html", **context)
 
 @app.route('/add', methods=['POST'])

@@ -9,9 +9,15 @@
   </style>
 
 
-<body bgcolor="76B3DF">
+<body bgcolor="76B3DF" vlink="226291">
   <h1>Welcome to Our Complete Rip-Off of GoColumbiaLions.com:Schedule</h1>
-
+  <strong>Select View</strong> 
+  <select onchange="location = this.options[this.selectedIndex].value;">
+     <option value={{schedulelink}}>Schedule</option>
+     <option value={{rosterlink}}>Roster</option> 
+     <option value={{newslink}}>News</option>
+  </select>
+  
   <table border="1" style="width:100%"> 
          <tr>
              <th>Date</th> 
@@ -28,7 +34,7 @@
        </tr>
        {% endfor %}
   </table>
-
+<p></p>
 <p><a href="/">Back to homepage</a></p>
 
 </body>

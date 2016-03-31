@@ -1,6 +1,9 @@
 <html>
   <head>
     <meta charset+"utf-8">
+    <script type="text/javascript" src="/static/jquery-latest.js"></script>
+    <script type="text/javascript" src="/static/jquery.tablesorter.js"></script>
+    <script type="text/javascript" src="/static/scripts.js"></script>
   </head>
   <style>
     body{ 
@@ -10,20 +13,34 @@
   </style>
 
 
-<body bgcolor="76B3DF">
+<body bgcolor="76B3DF" vlink="226291">
   <h1>Welcome to Our Complete Rip-Off of GoColumbiaLions.com</h1>
   <strong>Select View</strong> 
   <select onchange="location = this.options[this.selectedIndex].value;">
-     <option> Select</option> 
      <option value={{rosterlink}}>Roster</option> 
      <option value={{newslink}}>News</option>
      <option value={{schedulelink}}>Schedule</option> 
   </select>
-
-<!--  <div class="table table-striped"> -->
-  <table>
-  <table border="1" style="width:100%"> 
+  <p><strong>Coaches</strong></p>
+  <table border="1" style="width:100%">
+  <tbody>
     <tr>
+      {% for coach in coaches %}
+      <td align = "center"><img src={{coach[0][0]}} border=3 height=100 width=100></img></td>
+      {% endfor %}
+    </tr>
+    <tr>
+      {% for coach in coaches %} 
+      <td align="center">{{ coach[1][0] }}</td>
+      {% endfor %}
+    </tr>
+  </tbody>
+  </table>
+  <p></p> 
+  <table id="myTable" class="tablesorter" border="1" style="width:100%"> 
+  <thead>  
+    <tr bgcolor="308dcf">
+      <th>Photo</th>
       <th>Player Name</th>
       <th>Number</th>
       <th>Postition</th>
@@ -34,11 +51,12 @@
   <tbody>
     {% for entry in players %}
       <tr>
-      <td>{{ entry[0][0] }}</td>
-      <td>{{ entry[1] }}</td> 
-      <td>{{ entry[2] }}</td>
+      <td><img src={{entry[0][0]}} border=3 height=100 width=100></img></td>
+      <td>{{ entry[1][0] }}</td>
+      <td>{{ entry[2] }}</td> 
       <td>{{ entry[3] }}</td>
       <td>{{ entry[4] }}</td>
+      <td>{{ entry[5] }}</td>
       </tr>  
   {% endfor %}
   </tbody>

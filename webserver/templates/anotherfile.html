@@ -9,21 +9,30 @@
   </style>
 
 
-<body bgcolor="76B3DF">
+<body bgcolor="76B3DF" vlink="226291">
   <h1>Welcome to Our Complete Rip-Off of GoColumbiaLions.com:News</h1>
-
+  <strong>Select a View</strong>
+  <select onchange="location = this.options[this.selectedIndex].value;">
+     <option value={{newslink}}>News</option>
+     <option value={{rosterlink}}>Roster</option> 
+     <option value={{schedulelink}}>Schedule</option> 
+  </select>
+ 
   <table style="width:100%" border="1"> 
          <tr>
              <th>Date</th> 
              <th>Title</th> 
+             <th>Link to Story</th>
          </tr>
        {% for article in articles_info %} 
        <tr>  
          <td>{{ article[1] }}</td>
          <td>{{ article[0] }}</td>
+         <td><a href={{article[2][0]}}>Read Here!</a></td>
        </tr>
        {% endfor %}
-
+  </table>
+<p></p>
 <p><a href="/">Back to homepage</a></p>
 
 </body>
